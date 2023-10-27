@@ -5,9 +5,14 @@ import axios from "axios";
 import { Search } from "@mui/icons-material";
 
 function App() {
-  const [queryWord, setQueryWord] = useState("");
   const [inputWord, setInputWord] = useState("");
   const [imageList, setImageList] = useState([]);
+  const [queryWord, setQueryWord] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setQueryWord(inputWord);
+  };
 
   useEffect(() => {
     const getImages = async () => {
@@ -17,34 +22,23 @@ function App() {
         }&client_id=Az8AOSgPXWd1BuHx6_5g361bcbIKxF2nf_wJeVr_0Og`
       );
       setImageList(data.results);
-      console.log(data.results);
     };
-    let ignore = false;
-    if (!ignore) {
-      getImages();
-    }
-    return () => {
-      ignore = true;
-    };
+    getImages();
   }, [queryWord]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <div className="header">
+      <form onSubmit={handleSubmit} className="header">
         <input
+          type="search"
           className="inputField"
-          type="text"
-          placeholder="Search..."
+          placeholder="Search images..."
           onChange={(e) => setInputWord(e.target.value)}
         />
-        <button
-          className="searchButton"
-          type="button"
-          onClick={(e) => setQueryWord(inputWord)}
-        >
+        <button type="submit" className="searchButton">
           <Search />
         </button>
-      </div>
+      </form>
       <ImageList sx={{ ml: 2, mr: 2 }} variant="masonry" cols={3} gap={8}>
         {imageList.length > 0 ? (
           imageList.map((item) => {
@@ -53,7 +47,7 @@ function App() {
                 <img
                   srcSet={`${item.urls.thumb}?w=248&auto=format&dpr=2 2x`}
                   alt={item.alt_description}
-                  loading="eager"
+                  loading="lazy"
                 />
                 <ImageListItemBar
                   title={`By ${item.user.name}`}
