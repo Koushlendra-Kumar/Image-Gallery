@@ -11,10 +11,19 @@
   padding: 0 15px;
   height: 50px;
   background-color: rgb(212, 212, 212);
+  border: none !important;
+}
+.inputField{
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
+}
+.inputField:focus {
+  outline: none;
   border: none;
-  border-radius: 30px;
 }
 
 .searchButton {
   min-width: 50px !important;
+  border-top-right-radius: 30px;
+  border-bottom-right-radius: 30px;
 }
